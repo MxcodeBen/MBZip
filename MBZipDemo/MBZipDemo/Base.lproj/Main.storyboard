@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Test String" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aJq-Fy-HiT">
+                                <rect key="frame" x="5" y="54" width="172" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4gO-Wr-Qa9">
+                                <rect key="frame" x="182" y="134" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="6e0-Q4-DRe"/>
+                                    <constraint firstAttribute="height" constant="30" id="seO-Im-vhk"/>
+                                </constraints>
+                                <state key="normal" title="Unzip"/>
+                                <connections>
+                                    <action selector="unzipAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TDi-eO-AfP"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TFf-xY-PWq">
+                                <rect key="frame" x="237" y="54" width="172" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="168-XV-EZR">
+                                <rect key="frame" x="182" y="94" width="50" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="TVw-cE-0LH"/>
+                                    <constraint firstAttribute="width" constant="50" id="pgM-Yx-jwu"/>
+                                </constraints>
+                                <state key="normal" title="Zip"/>
+                                <connections>
+                                    <action selector="zipAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kpp-2S-gj1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="168-XV-EZR" firstAttribute="leading" secondItem="aJq-Fy-HiT" secondAttribute="trailing" constant="5" id="0Ai-2e-n5s"/>
+                            <constraint firstItem="4gO-Wr-Qa9" firstAttribute="leading" secondItem="aJq-Fy-HiT" secondAttribute="trailing" constant="5" id="5Q3-Z9-WZP"/>
+                            <constraint firstItem="4gO-Wr-Qa9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5aV-ZJ-PFC"/>
+                            <constraint firstItem="aJq-Fy-HiT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Bg8-6H-jRb"/>
+                            <constraint firstItem="168-XV-EZR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="Inh-F5-NX6"/>
+                            <constraint firstItem="aJq-Fy-HiT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="NKd-H4-lA1"/>
+                            <constraint firstItem="TFf-xY-PWq" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="10" id="Opy-1o-xaV"/>
+                            <constraint firstItem="4gO-Wr-Qa9" firstAttribute="top" secondItem="168-XV-EZR" secondAttribute="bottom" constant="10" id="U2r-qP-bCH"/>
+                            <constraint firstItem="TFf-xY-PWq" firstAttribute="leading" secondItem="168-XV-EZR" secondAttribute="trailing" constant="5" id="ZcV-bo-Gwh"/>
+                            <constraint firstItem="TFf-xY-PWq" firstAttribute="leading" secondItem="4gO-Wr-Qa9" secondAttribute="trailing" constant="5" id="ZmK-gB-CaU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="TFf-xY-PWq" secondAttribute="trailing" constant="5" id="bpg-J6-UQI"/>
+                            <constraint firstItem="TFf-xY-PWq" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="oXf-mQ-uch"/>
+                            <constraint firstItem="aJq-Fy-HiT" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" constant="10" id="qcb-AM-2rT"/>
+                            <constraint firstItem="168-XV-EZR" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="u58-TY-nxb"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="originTextView" destination="aJq-Fy-HiT" id="qNc-ej-oRJ"/>
+                        <outlet property="zipedTextView" destination="TFf-xY-PWq" id="gOH-wA-VJk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
