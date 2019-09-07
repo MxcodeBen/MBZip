@@ -69,3 +69,78 @@ pod trunk push 配置文件//pod trunk push YCSegmentView.podspec
 `
 
 
+### Framework
+
+* 1 Add FILE_LICENSE file to current folder.
+
+* 1 Added Headers to public. Build Phases -> Headers
+
+* 2 Create new target in framework project. Cross-platform -> Aggregate
+
+* 3 Add Run Script. Build Phases -> Add. For framework's all platform.
+```
+#!/bin/sh
+
+UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal
+
+# make sure the output directory exists
+mkdir -p "${UNIVERSAL_OUTPUTFOLDER}"
+
+# Step 1. Build Device and Simulator versions
+xcodebuild -target "${PROJECT_NAME}" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
+xcodebuild -target "${PROJECT_NAME}" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR="${BUILD_DIR}" BUILD_ROOT="${BUILD_ROOT}" clean build
+
+# Step 2. Copy the framework structure (from iphoneos build) to the universal folder
+cp -R "${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework" "${UNIVERSAL_OUTPUTFOLDER}/"
+
+# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory
+SIMULATOR_SWIFT_MODULES_DIR="${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/."
+if [ -d "${SIMULATOR_SWIFT_MODULES_DIR}" ]; then
+cp -R "${SIMULATOR_SWIFT_MODULES_DIR}" "${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule"
+fi
+
+# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory
+lipo -create -output "${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}" "${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}" "${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}"
+
+# Step 5. Convenience step to copy the framework to the project's directory
+cp -R "${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework" "${PROJECT_DIR}"
+
+# Step 6. Convenience step to open the project's directory in Finder
+open "${PROJECT_DIR}"
+
+```
+
+* 4 Run current target-> Generic iOS Device.
+
+* 5 Check result framework's platforms.
+`
+lipo -info ***.framework/*** 
+`
+Output 'i386 x86_64 armv7 arm64'  is good.
+
+* 6 Compress result framework file and FILE_LICENSE file to zip.
+
+* 7 Upload zip file to your website.
+
+* 8 Create config file.
+
+* 9 Edit config file.
+```
+Pod::Spec.new do |spec|
+  spec.name         = "MBZipLib"
+  spec.version      = "0.3"
+  spec.summary      = "Zip for NSString."
+  spec.description  = <<-DESC
+  Framework for zip NSString.
+                   DESC
+  spec.homepage     = "http://mxcode.com"
+  spec.license      = { :type => "MIT", :file => "FILE_LICENSE" }
+  spec.author       = { "benyao" => "yao.h@163.com" }
+  spec.source       = { :http => "https://****/MBZip0.1.zip" }
+  spec.vendored_frameworks ='MBZip.framework'
+  spec.ios.deployment_target = '8.0'
+end
+
+```
+
+* 10 Check and Push.
