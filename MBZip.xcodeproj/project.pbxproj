@@ -6,12 +6,26 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B5A4EC5F232398D300466020 /* MBZipAll */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = B5A4EC60232398D300466020 /* Build configuration list for PBXAggregateTarget "MBZipAll" */;
+			buildPhases = (
+				B5A4EC632323999700466020 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = MBZipAll;
+			productName = MBZipAll;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		B58D758B23235DA300F01802 /* MBZip.h in Headers */ = {isa = PBXBuildFile; fileRef = B58D758923235DA300F01802 /* MBZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B58D759523235E5A00F01802 /* NSData+MBZip.m in Sources */ = {isa = PBXBuildFile; fileRef = B58D759123235E5A00F01802 /* NSData+MBZip.m */; };
-		B58D759623235E5A00F01802 /* NSString+MBZip.h in Headers */ = {isa = PBXBuildFile; fileRef = B58D759223235E5A00F01802 /* NSString+MBZip.h */; };
+		B58D759623235E5A00F01802 /* NSString+MBZip.h in Headers */ = {isa = PBXBuildFile; fileRef = B58D759223235E5A00F01802 /* NSString+MBZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B58D759723235E5A00F01802 /* NSString+MBZip.m in Sources */ = {isa = PBXBuildFile; fileRef = B58D759323235E5A00F01802 /* NSString+MBZip.m */; };
-		B58D759823235E5A00F01802 /* NSData+MBZip.h in Headers */ = {isa = PBXBuildFile; fileRef = B58D759423235E5A00F01802 /* NSData+MBZip.h */; };
+		B58D759823235E5A00F01802 /* NSData+MBZip.h in Headers */ = {isa = PBXBuildFile; fileRef = B58D759423235E5A00F01802 /* NSData+MBZip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +124,9 @@
 					B58D758523235DA300F01802 = {
 						CreatedOnToolsVersion = 10.3;
 					};
+					B5A4EC5F232398D300466020 = {
+						CreatedOnToolsVersion = 10.3;
+					};
 				};
 			};
 			buildConfigurationList = B58D758023235DA300F01802 /* Build configuration list for PBXProject "MBZip" */;
@@ -125,6 +142,7 @@
 			projectRoot = "";
 			targets = (
 				B58D758523235DA300F01802 /* MBZip */,
+				B5A4EC5F232398D300466020 /* MBZipAll */,
 			);
 		};
 /* End PBXProject section */
@@ -138,6 +156,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B5A4EC632323999700466020 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Step 5. Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${PROJECT_DIR}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${PROJECT_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B58D758223235DA300F01802 /* Sources */ = {
@@ -283,6 +321,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MBZip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -309,6 +348,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MBZip/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -319,6 +359,22 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B5A4EC61232398D300466020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B5A4EC62232398D300466020 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -339,6 +395,15 @@
 			buildConfigurations = (
 				B58D758F23235DA300F01802 /* Debug */,
 				B58D759023235DA300F01802 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B5A4EC60232398D300466020 /* Build configuration list for PBXAggregateTarget "MBZipAll" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5A4EC61232398D300466020 /* Debug */,
+				B5A4EC62232398D300466020 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
