@@ -110,6 +110,8 @@ open "${PROJECT_DIR}"
 
 ```
 
+* 4 Run Framework target for iOS Device, iPhone5, iPhone8
+
 * 4 Run current target-> Generic iOS Device.
 
 * 5 Check result framework's platforms.
